@@ -1,0 +1,5 @@
+host: localhost # keep the same
+database: example_db
+user: example_username
+password: example_password
+port: 5432 # keep the same

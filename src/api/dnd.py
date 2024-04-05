@@ -1,10 +1,10 @@
 from flask_restful import Resource, reqparse, request
-from db import dnd
+from db import character
 
 class HelloWorld(Resource):
     def get(self):
-        return list(tuple(dnd.list_users()))
+        return list(tuple(character.list_characters()))
 
 class Users(Resource):
     def get(self):
-        return list(tuple(dnd.list_users()))
+        return list(tuple(character.list_characters()))

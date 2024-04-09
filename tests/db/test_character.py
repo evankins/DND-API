@@ -17,16 +17,16 @@ class TestCharacter(unittest.TestCase):
 
         # List after
         new_characters_len = len(list_characters())
-        self.assertEquals(new_characters_len, characters_len + 1)
+        self.assertEqual(new_characters_len, characters_len + 1)
 
         # Get
         test_character = get_character(test_id)
-        self.assertEquals(test_character[0], 'Test')
+        self.assertEqual(test_character[0], 'Test')
 
         # Update
         test_id = update_character(test_id, 'Test2', 2, 2, 2, 2, 2, 2, 2, 1)
         test_character = get_character(test_id)
-        self.assertEquals(test_character[0], 'Test2')
+        self.assertEqual(test_character[0], 'Test2')
 
         # Delete
         delete_character(test_id)

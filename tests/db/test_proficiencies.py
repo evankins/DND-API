@@ -2,7 +2,7 @@ import unittest
 from src.db.character import create_character
 from src.db.proficiencies import *
 
-class TestCharacter(unittest.TestCase):
+class TestProficiencies(unittest.TestCase):
     def setUp(self):
         exec_sql_file('src/db/schema.sql')
         exec_sql_file('src/db/test_data.sql')
@@ -21,8 +21,8 @@ class TestCharacter(unittest.TestCase):
         self.assertIn('Athletics', proficiencies[0])
 
         # Test skill proficiency
-        athletics_prof = calculate_skill_modifier(test_id, 'Athletics')
-        persuasion_prof = calculate_skill_modifier(test_id, 'Persuasion')
+        athletics_prof = get_skill_modifier(test_id, 'Athletics')
+        persuasion_prof = get_skill_modifier(test_id, 'Persuasion')
         # proficiency bonus : 3
         # str modifier : 5
         self.assertEqual(athletics_prof, 8)
@@ -31,7 +31,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(persuasion_prof, 3)
 
         # Test non-proficient skill
-        acrobatics_prof = calculate_skill_modifier(test_id, 'Acrobatics')
+        acrobatics_prof = get_skill_modifier(test_id, 'Acrobatics')
         # proficiency bonus : 3 (not applied)
         # dex modifier : 4
         self.assertEqual(acrobatics_prof, 4)

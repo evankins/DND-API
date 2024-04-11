@@ -82,9 +82,7 @@ def get_proficiency_bonus(character_id):
     return __calculate_proficiency_bonus(level)
 
 
-
-
-def calculate_skill_modifier(character_id, skill_name):
+def get_skill_modifier(character_id, skill_name):
     """
     Calculate the modifier for a skill.
 
@@ -95,77 +93,25 @@ def calculate_skill_modifier(character_id, skill_name):
     Returns the modifier for the skill
     """
 
-
+    # left join on the proficiencies table to avoid issues with non-proficient skills 
     sql = """ 
-    SELECT a.name FROM abilities a
+    SELECT a.name, p.character_id FROM abilities a
     INNER JOIN skills s ON s.ability_id = a.id
-    INNER JOIN proficiencies p ON p.skill_id = s.id
-    INNER JOIN characters ch ON ch.id = p.character_id
-    WHERE ch.id = %s AND s.name = %s
-    """
-
-
-    proficiency_bonus = get_proficiency_bonus(character_id)
-    stat_name = exec_get_one(sql, [character_id, skill_name])
-
-    # if not proficient, return the ability modifier
-    if stat_name is None:
-        sql = """
-        SELECT a.name FROM abilities a
-        INNER JOIN skills s ON s.ability_id = a.id
-        WHERE s.name = %s
-        """
-        stat_name = exec_get_one(sql, [skill_name])
-        return get_ability_modifier(character_id, stat_name[0])
-    
-    ability_modifier = get_ability_modifier(character_id, stat_name[0])
-
-    return proficiency_bonus + ability_modifier
-
-def new_calculate_skill_modifier(character_id, skill_name):
-    """
-    Calculate the modifier for a skill.
-
-    Keyword arguments:
-    character_id -- id of the character
-    skill_name -- name of the skill
-
-    Returns the modifier for the skill
-    """
-
-    old_sql = """
-    SELECT COUNT(subquery), a.name
-    FROM (
-        SELECT * FROM proficiencies p
-        INNER JOIN skills s ON s.id = p.skill_id
-        WHERE p.character_id = %s AND s.name = %s
-    ) as subquery
-    INNER JOIN skills s ON s.id = subquery.skill_id
-    INNER JOIN abilities a ON a.id = s.ability_id
-    WHERE s.name = %s
-    GROUP BY a.name
-        SELECT COUNT(*) FROM proficiencies p
-    INNER JOIN skills s ON s.id = p.skill_id
-    WHERE p.character_id = %s AND s.name = %s;
-    """
-
-    sql = """
-    SELECT COUNT(*) FROM proficiencies p
-    INNER JOIN skills s ON s.id = p.skill_id
-    WHERE p.character_id = %s AND s.name = %s;
-    SELECT a.name FROM abilities a
-    INNER JOIN skills s ON s.ability_id = a.id
+    LEFT JOIN proficiencies p ON p.skill_id = s.id AND p.character_id = %s
     WHERE s.name = %s
     """
 
-    result = exec_get_all(sql, [character_id, skill_name, skill_name])
-    print (result)
+    result = exec_get_one(sql, [character_id, skill_name])
+    stat_name = result[0]
+    is_proficient = result[1] is not None
 
-    proficiency_bonus = get_proficiency_bonus(character_id)
-    ability_modifier = 0
+    ability_modifier = get_ability_modifier(character_id, stat_name)
 
-    return proficiency_bonus + ability_modifier
-
+    if is_proficient:
+        proficiency_bonus = get_proficiency_bonus(character_id)
+        return proficiency_bonus + ability_modifier
+    else:
+        return ability_modifier
 
 def get_ability_value(character_id, stat_name):
     sql = """SELECT {} FROM characters WHERE id = %s""".format(stat_name)

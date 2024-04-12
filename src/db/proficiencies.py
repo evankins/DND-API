@@ -2,7 +2,8 @@ import os
 import math
 from .db_utils import *
 
-# Private functions
+
+# ===== Private functions =====
 def __calculate_proficiency_bonus(level):
     """
     Calculate the proficiency bonus based on the character's level.
@@ -15,6 +16,12 @@ def __calculate_proficiency_bonus(level):
 
     # Proficiency Bonus = 1 + Character Level / 4 (round up)
     return 1 + math.ceil((level) / 4)
+
+def __calculate_ability_modifier(ability_score):
+    return (ability_score - 10) // 2
+
+
+# ===== Public functions =====
 
 def create_proficiency(character_id, proficiency_name):
     """
@@ -95,20 +102,24 @@ def get_skill_modifier(character_id, skill_name):
 
     # left join on the proficiencies table to avoid issues with non-proficient skills 
     sql = """ 
-    SELECT a.name, p.character_id FROM abilities a
+    SELECT ch.level, ca.score, p.character_id as is_proficient FROM abilities a
+	INNER JOIN characters ch ON ch.id = %s
     INNER JOIN skills s ON s.ability_id = a.id
-    LEFT JOIN proficiencies p ON p.skill_id = s.id AND p.character_id = %s
+	INNER JOIN character_abilities ca ON ca.character_id = ch.id
+    LEFT JOIN proficiencies p ON p.skill_id = s.id AND p.character_id = ch.id
     WHERE s.name = %s
+	AND ca.ability_id = a.id;
     """
 
     result = exec_get_one(sql, [character_id, skill_name])
-    stat_name = result[0]
-    is_proficient = result[1] is not None
+    level = result[0]
+    ability_score = result[1]
+    is_proficient = result[2] is not None
 
-    ability_modifier = get_ability_modifier(character_id, stat_name)
+    proficiency_bonus = __calculate_proficiency_bonus(level)
+    ability_modifier = __calculate_ability_modifier(ability_score)
 
     if is_proficient:
-        proficiency_bonus = get_proficiency_bonus(character_id)
         return proficiency_bonus + ability_modifier
     else:
         return ability_modifier
@@ -123,4 +134,3 @@ def get_ability_modifier(character_id, stat_name):
 
     return (value - 10) // 2
 
-    

@@ -130,7 +130,23 @@ def get_ability_value(character_id, stat_name):
     return exec_get_one(sql, [character_id])[0]
 
 def get_ability_modifier(character_id, stat_name):
-    value = get_ability_value(character_id, stat_name)
+    """
+    Calculate the modifier for an ability score.
 
-    return (value - 10) // 2
+    Keyword arguments:
+    character_id -- id of the character
+    stat_name -- name of the ability score
+
+    Returns the modifier for the ability score
+    """
+    
+    sql = """
+    SELECT ca.score FROM character_abilities ca
+    INNER JOIN abilities a ON a.id = ca.ability_id
+    WHERE ca.character_id = %s AND a.name = %s
+    """
+
+    value = exec_get_one(sql, [character_id, stat_name])[0]
+
+    return __calculate_ability_modifier(value)
 

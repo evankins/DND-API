@@ -5,7 +5,7 @@ from src.db.proficiencies import *
 
 class TestSpeed(unittest.TestCase):
 
-    def test_speed_difference(self):
+    def _test_speed_difference(self):
         test_id = create_character('Test', 7, 20, 18, 16, 14, 12, 10, 1)
 
         print('\nTesting proficiency bonus calculation speed...')

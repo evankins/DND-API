@@ -20,10 +20,30 @@ INSERT INTO classes (name, saving_throw_ability_1, saving_throw_ability_2) VALUE
     ('Warlock', 4, 5),
     ('Wizard', 4, 1);
 
-INSERT INTO characters (name, level, strength, dexterity, constitution, intelligence, wisdom, charisma, class_id) VALUES 
-    ('Character 1', 1, 10, 12, 14, 8, 16, 13, 1),
-    ('Character 2', 2, 12, 14, 10, 16, 8, 13, 2),
-    ('Character 3', 3, 14, 10, 12, 8, 13, 16, 3);
+INSERT INTO characters (name, level, class_id) VALUES 
+    ('Character 1', 1, 1),
+    ('Character 2', 2, 2),
+    ('Character 3', 3, 3);
+
+INSERT INTO character_abilities (character_id, ability_id, score) VALUES
+    (1, 1, 10),
+    (1, 2, 12),
+    (1, 3, 14),
+    (1, 4, 8),
+    (1, 5, 16),
+    (1, 6, 13),
+    (2, 1, 12),
+    (2, 2, 14),
+    (2, 3, 10),
+    (2, 4, 16),
+    (2, 5, 8),
+    (2, 6, 13),
+    (3, 1, 14),
+    (3, 2, 10),
+    (3, 3, 12),
+    (3, 4, 8),
+    (3, 5, 13),
+    (3, 6, 16);
 
 INSERT INTO skills (name, ability_id) VALUES 
     ('Acrobatics', 2),

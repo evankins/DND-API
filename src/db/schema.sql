@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS classes CASCADE;
 DROP TABLE IF EXISTS characters CASCADE;
 DROP TABLE IF EXISTS skills CASCADE;
 DROP TABLE IF EXISTS proficiencies CASCADE;
+DROP TABLE IF EXISTS character_abilities CASCADE;
 
 CREATE TABLE abilities(
     id            SERIAL PRIMARY KEY,
@@ -20,13 +21,14 @@ CREATE TABLE characters(
     id            SERIAL PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
     level         INT NOT NULL,
-    strength      INT NOT NULL,
-    dexterity     INT NOT NULL,
-    constitution  INT NOT NULL,
-    intelligence  INT NOT NULL,
-    wisdom        INT NOT NULL,
-    charisma      INT NOT NULL,
     class_id      INT NOT NULL REFERENCES classes
+);
+
+CREATE TABLE character_abilities(
+    id              SERIAL PRIMARY KEY,
+    character_id    INT NOT NULL REFERENCES characters,
+    ability_id      INT NOT NULL REFERENCES abilities,
+    score           INT NOT NULL
 );
 
 CREATE TABLE skills(

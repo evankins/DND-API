@@ -84,8 +84,6 @@ def update_character(character_id, name, level, strength, dexterity, constitutio
     name -- name of the character
     level -- level of the character
     class_id -- class
-
-    Returns the id of the updated character
     """
 
     sql = """
@@ -102,11 +100,10 @@ def update_character(character_id, name, level, strength, dexterity, constitutio
         WHEN 6 THEN %s
         ELSE score
         END
-    WHERE character_id = %s AND ability_id IN (1, 2, 3, 4, 5, 6)
-    RETURNING id;
+    WHERE character_id = %s AND ability_id IN (1, 2, 3, 4, 5, 6);
     """
 
-    return exec_commit_get_one(sql, [name, level, class_id, character_id, strength, dexterity, constitution, intelligence, wisdom, charisma, character_id])
+    exec_commit(sql, [name, level, class_id, character_id, strength, dexterity, constitution, intelligence, wisdom, charisma, character_id])
 
 def delete_character(character_id):
     """
@@ -117,10 +114,11 @@ def delete_character(character_id):
     """
 
     sql = """
-    DELETE FROM characters
-    WHERE id = %s
+    DELETE FROM character_abilities WHERE character_id = %s;
+    DELETE FROM proficiencies WHERE character_id = %s;
+    DELETE FROM characters WHERE id = %s
     """
 
-    exec_commit(sql, [character_id])
+    exec_commit(sql, [character_id, character_id, character_id])
 
 

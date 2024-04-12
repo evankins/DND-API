@@ -24,7 +24,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(test_character[0], 'Test')
 
         # Update
-        test_id = update_character(test_id, 'Test2', 2, 2, 2, 2, 2, 2, 2, 1)
+        update_character(test_id, 'Test2', 2, 2, 2, 2, 2, 2, 2, 1)
         test_character = get_character(test_id)
         self.assertEqual(test_character[0], 'Test2')
 

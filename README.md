@@ -27,4 +27,5 @@ This project serves as a database designed to catalog the tables and attendees p
 
 ## How to test it
 
-1. Execute `python -m unittest`
+1. Make sure the server is running
+2. Execute `python -m unittest`

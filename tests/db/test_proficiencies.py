@@ -36,3 +36,8 @@ class TestProficiencies(unittest.TestCase):
         # dex modifier : 4
         self.assertEqual(acrobatics_prof, 4)
 
+        # Test delete proficiency
+        delete_proficiency(test_id, 'Athletics')
+        proficiencies = list_proficiencies(test_id)
+        self.assertNotIn('Athletics', proficiencies[0])
+

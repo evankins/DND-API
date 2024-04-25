@@ -49,7 +49,13 @@ def delete_proficiency(character_id, proficiency_name):
     proficiency_name -- name of the proficiency
     """
 
-    sql = """DELETE FROM proficiencies WHERE character_id = %s AND name = %s"""
+    sql = """
+    DELETE FROM proficiencies
+    USING skills
+    WHERE skills.id = proficiencies.skill_id
+    AND proficiencies.character_id = %s
+    AND skills.name = %s
+    """
 
     exec_commit(sql, [character_id, proficiency_name])
 
@@ -123,11 +129,6 @@ def get_skill_modifier(character_id, skill_name):
         return proficiency_bonus + ability_modifier
     else:
         return ability_modifier
-
-def get_ability_value(character_id, stat_name):
-    sql = """SELECT {} FROM characters WHERE id = %s""".format(stat_name)
-
-    return exec_get_one(sql, [character_id])[0]
 
 def get_ability_modifier(character_id, stat_name):
     """

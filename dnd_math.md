@@ -5,7 +5,7 @@ In Dungeons & Dragons (D&D), there are several mathematical calculations that ar
 ### Ability Score Modifier
 
 To calculate the ability score modifier, use the following formula:
-Modifier = (Ability Score - 10) / 2
+Modifier = (Ability Score - 10) / 2 (round down)
 
 ### Hit Points (HP)
 

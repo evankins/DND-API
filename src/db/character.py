@@ -1,5 +1,7 @@
 import os
 from .db_utils import *
+from .dnd_math import *
+from .skills import get_skill
 
 def rebuild_tables():
     exec_sql_file('src/db/schema.sql')
@@ -34,36 +36,60 @@ def create_character(name, level, strength, dexterity, constitution, intelligenc
 
     return exec_commit_get_one(sql, [name, level, class_id, strength, dexterity, constitution, intelligence, wisdom, charisma])
 
-def get_character(character_id):
+def get_character(character_id = None):
     """
     Gets a character by id
 
     Keyword arguments:
-    user_id -- id key of the character, if none is provided, returns all characters
+    user_id -- id key of the character, None if not specified
     
-    Returns all of the information about a character
+    If character_id is None, returns all characters' surface-level information (name, level, class)
+    If character_id is not None, returns all information about the character (name, level, class, ability scores)
     """
 
     sql = """
-    SELECT row_to_json(ch) as character
-    FROM (
-        SELECT ch.name, ch.level, c.name as class_name,
-        ARRAY_AGG(json_build_object('name', a.name, 'score', ca.score)) as ability_scores
-        FROM characters ch
-        INNER JOIN classes c ON ch.class_id = c.id
-        INNER JOIN character_abilities ca ON ch.id = ca.character_id
-        INNER JOIN abilities a ON ca.ability_id = a.id
-        WHERE (ch.id = %s OR %s IS NULL)
-        GROUP BY ch.name, ch.level, c.name
-    ) ch
+    SELECT ch.name, ch.level, c.name as class_name,
+    ARRAY_AGG(json_build_object('name', a.name, 'score', ca.score)) as ability_scores
+    FROM characters ch
+    INNER JOIN classes c ON ch.class_id = c.id
+    INNER JOIN character_abilities ca ON ch.id = ca.character_id
+    INNER JOIN abilities a ON ca.ability_id = a.id
+    WHERE (ch.id = %s OR %s IS NULL)
+    GROUP BY ch.name, ch.level, c.name;
     """
-
+    
+    # if character_id is None, return all surface-level character information
     if character_id is None:
-        return exec_get_all(sql, [character_id, character_id])
+        result = exec_get_all(sql, [character_id, character_id])
+        characters = []
+        for character in result:
+            character = {
+                'name': character[0],
+                'level': character[1],
+                'class_name': character[2],
+            }
+            characters.append(character)
+        return characters
+    
+    # if character_id is not None, return all information about the character
     else:
         result = exec_get_one(sql, [character_id, character_id])
         if result is not None:
-            return result[0]
+            character = {
+                'name': result[0],
+                'level': result[1],
+                'class_name': result[2],
+                'ability_scores': [],
+                'skills': get_skill(character_id) # second SQL query to get skills
+            }
+            for ability in result[3]:
+                ability_score = {
+                    'name': ability['name'],
+                    'score': ability['score'],
+                    'modifier': calculate_ability_modifier(ability['score'])
+                }
+                character['ability_scores'].append(ability_score)
+            return character
         return None
             
 

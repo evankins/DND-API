@@ -9,24 +9,24 @@ class TestCharacter(unittest.TestCase):
     
     def test_character(self):
         # List before
-        characters_len = len(list_characters())
+        characters_len = len(get_character(None))
 
         # Create
         test_id = create_character('Test', 1, 1, 1, 1, 1, 1, 1, 1)
         self.assertIsNotNone(test_id)
 
         # List after
-        new_characters_len = len(list_characters())
+        new_characters_len = len(get_character(None))
         self.assertEqual(new_characters_len, characters_len + 1)
 
         # Get
         test_character = get_character(test_id)
-        self.assertEqual(test_character[0], 'Test')
+        self.assertEqual(test_character['name'], 'Test')
 
         # Update
         update_character(test_id, 'Test2', 2, 2, 2, 2, 2, 2, 2, 1)
         test_character = get_character(test_id)
-        self.assertEqual(test_character[0], 'Test2')
+        self.assertEqual(test_character['name'], 'Test2')
 
         # Delete
         delete_character(test_id)

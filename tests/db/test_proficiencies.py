@@ -1,6 +1,7 @@
 import unittest
 from src.db.character import create_character
 from src.db.proficiencies import *
+from src.db.modifiers import *
 
 class TestProficiencies(unittest.TestCase):
     def setUp(self):

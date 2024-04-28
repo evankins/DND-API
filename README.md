@@ -1,8 +1,8 @@
-# GZG Personal Project
+# DND Personal Project
 
 ## Description
 
-This project serves as a database designed to catalog the tables and attendees participating in the annual GZG tabletop convention. It aims to provide an organized inventory of available gaming tables and the individuals engaging in various tabletop games.
+This project uses Python and PostgreSQL to manage and interact with DND character data, including their skills, abilities, and proficiencies. The application provides an API for accessing and manipulating this data, allowing users to create, read, update, and delete characters and their associated attributes. This project is a great way to combine a passion for D&D with software development, and serves as a practical exercise in database management, API development, and Python programming.
 
 ## Table of Contents
 

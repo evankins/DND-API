@@ -1,11 +1,9 @@
 from flask_restful import Resource, reqparse, request  #NOTE: Import from flask_restful, not python
 from db.db_utils import *
 
-from db.character import rebuild_tables
-
 class Init(Resource):
     def post(self):
-        rebuild_tables()
+        rebuild_test_tables()
 
 class Version(Resource):
     def get(self):

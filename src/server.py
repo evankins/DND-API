@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Resource, Api
 from api.dnd_api import *
 from api.management import *
+from db.db_utils import rebuild_test_tables
 
 app = Flask(__name__)
 api = Api(app)
@@ -15,5 +16,5 @@ api.add_resource(ProficienciesAPI, '/proficiencies')
 api.add_resource(SkillsAPI, '/skills')
 
 if __name__ == '__main__':
-    rebuild_tables()
+    rebuild_test_tables()
     app.run(debug=True)

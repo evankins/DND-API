@@ -81,3 +81,7 @@ def exec_list(sql, list = {}):
 
     return result_list
 
+def rebuild_test_tables():
+    exec_sql_file('src/db/schema.sql')
+    exec_sql_file('src/db/test_data.sql')
+

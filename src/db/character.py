@@ -16,6 +16,20 @@ def create_character(name, level, strength, dexterity, constitution, intelligenc
     Returns the id of the created character
     """
 
+    # Check if any of the parameters are None
+    if any(arg is None for arg in [name, level, strength, dexterity, constitution, intelligence, wisdom, charisma, class_id]):
+        return "Character creation failed: All parameters must be provided"
+    
+    # Check if any of the ability scores are not between 1 and 20
+    if any(not 1 <= score <= 20 for score in [strength, dexterity, constitution, intelligence, wisdom, charisma]):
+        return "Character creation failed: All ability scores must be between 1 and 20"
+    
+    # Check if the class_id exists
+    sql = "SELECT id FROM classes WHERE id = %s"
+    result = exec_get_one(sql, [class_id])
+    if not result:
+        return "Character creation failed: Class ID does not exist"
+
     sql = """
     INSERT INTO characters (name, level, class_id) VALUES 
         (%s, %s, %s)
@@ -30,7 +44,11 @@ def create_character(name, level, strength, dexterity, constitution, intelligenc
     RETURNING currval('characters_id_seq');
     """
 
-    return exec_commit_get_one(sql, [name, level, class_id, strength, dexterity, constitution, intelligence, wisdom, charisma])
+    result = exec_commit_get_one(sql, [name, level, class_id, strength, dexterity, constitution, intelligence, wisdom, charisma])
+
+    if result is not None:
+        return result
+    return "Character creation failed: Unknown error"
 
 def get_character(character_id = None):
     """
@@ -62,7 +80,7 @@ def get_character(character_id = None):
             character = {
                 'name': character[0],
                 'level': character[1],
-                'class_name': character[2],
+                'class': character[2],
             }
             characters.append(character)
         return characters
@@ -99,25 +117,43 @@ def update_character(character_id, name, level, strength, dexterity, constitutio
     level -- level of the character
     class_id -- class
     """
+        
+    # Check if any of the ability scores are not between 1 and 20, ignores None values
+    if any(not 1 <= score <= 20 for score in [strength, dexterity, constitution, intelligence, wisdom, charisma] if score is not None):
+        return "Character update failed: All ability scores must be between 1 and 20"
 
+    # Check if the character with the given ID exists
+    sql_check = "SELECT id FROM characters WHERE id = %s"
+    result = exec_get_one(sql_check, [character_id])
+    if not result:
+        return "Character update failed: Character not found"
+    
+    # Check if the class_id exists
+    sql = "SELECT id FROM classes WHERE id = %s OR %s IS NULL"
+    result = exec_get_one(sql, [class_id, class_id])
+    if not result:
+        return "Character update failed: Class ID does not exist"
+
+    # COALESCE is used to update only the fields that are not None
     sql = """
     UPDATE characters
-    SET name = %s, level = %s, class_id = %s
+    SET name = COALESCE(%s, name), level = COALESCE(%s, level), class_id = COALESCE(%s, class_id)
     WHERE id = %s;
     UPDATE character_abilities
     SET score = CASE ability_id
-        WHEN 1 THEN %s
-        WHEN 2 THEN %s
-        WHEN 3 THEN %s
-        WHEN 4 THEN %s
-        WHEN 5 THEN %s
-        WHEN 6 THEN %s
+        WHEN 1 THEN COALESCE(%s, score)
+        WHEN 2 THEN COALESCE(%s, score)
+        WHEN 3 THEN COALESCE(%s, score)
+        WHEN 4 THEN COALESCE(%s, score)
+        WHEN 5 THEN COALESCE(%s, score)
+        WHEN 6 THEN COALESCE(%s, score)
         ELSE score
         END
     WHERE character_id = %s AND ability_id IN (1, 2, 3, 4, 5, 6);
     """
 
     exec_commit(sql, [name, level, class_id, character_id, strength, dexterity, constitution, intelligence, wisdom, charisma, character_id])
+    return "Character updated successfully"
 
 def delete_character(character_id):
     """
@@ -127,6 +163,12 @@ def delete_character(character_id):
     character_id -- id key of the character
     """
 
+    # Check if the character with the given ID exists
+    sql_check = "SELECT id FROM characters WHERE id = %s"
+    result = exec_get_one(sql_check, [character_id])
+    if not result:
+        return "Character deletion failed: Character not found"
+
     sql = """
     DELETE FROM character_abilities WHERE character_id = %s;
     DELETE FROM proficiencies WHERE character_id = %s;
@@ -134,5 +176,6 @@ def delete_character(character_id):
     """
 
     exec_commit(sql, [character_id, character_id, character_id])
+    return "Character deleted successfully"
 
 

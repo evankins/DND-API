@@ -1,25 +1,3 @@
-INSERT INTO abilities (name) VALUES 
-    ('Strength'),
-    ('Dexterity'),
-    ('Constitution'),
-    ('Intelligence'),
-    ('Wisdom'),
-    ('Charisma');
-
-INSERT INTO classes (name, saving_throw_ability_1, saving_throw_ability_2) VALUES 
-    ('Barbarian', 1, 3),
-    ('Bard', 5, 6),
-    ('Cleric', 5, 4),
-    ('Druid', 5, 3),
-    ('Fighter', 1, 2),
-    ('Monk', 2, 3),
-    ('Paladin', 1, 5),
-    ('Ranger', 2, 4),
-    ('Rogue', 2, 6),
-    ('Sorcerer', 4, 6),
-    ('Warlock', 4, 5),
-    ('Wizard', 4, 1);
-
 INSERT INTO characters (name, level, class_id) VALUES 
     ('Character 1', 1, 1),
     ('Character 2', 2, 2),
@@ -44,26 +22,6 @@ INSERT INTO character_abilities (character_id, ability_id, score) VALUES
     (3, 4, 8),
     (3, 5, 13),
     (3, 6, 16);
-
-INSERT INTO skills (name, ability_id) VALUES 
-    ('Athletics', 1),
-    ('Acrobatics', 2),    
-    ('Sleight of Hand', 2),    
-    ('Stealth', 2),
-    ('Arcana', 4),
-    ('History', 4),
-    ('Investigation', 4),
-    ('Nature', 4),
-    ('Religion', 4),
-    ('Animal Handling', 5), 
-    ('Insight', 5),
-    ('Medicine', 5),
-    ('Perception', 5),
-    ('Survival', 5),
-    ('Deception', 6),
-    ('Intimidation', 6),
-    ('Performance', 6),
-    ('Persuasion', 6);
 
 INSERT INTO proficiencies (character_id, skill_id) VALUES 
     (1, 1),

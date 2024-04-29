@@ -13,6 +13,7 @@ def get_skill(character_id, skill_name = None):
     Returns the skill(s) and proficiency bonuses of the character
     """
 
+    # left join on the proficiencies table to avoid issues with non-proficient skills
     sql = """
     SELECT ch.level, ca.score, p.character_id as is_proficient, s.name FROM abilities a
 	INNER JOIN characters ch ON ch.id = %s

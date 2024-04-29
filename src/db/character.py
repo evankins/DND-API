@@ -3,10 +3,6 @@ from .db_utils import *
 from .dnd_math import *
 from .skills import get_skill
 
-def rebuild_tables():
-    exec_sql_file('src/db/schema.sql')
-    exec_sql_file('src/db/test_data.sql')
-
 def create_character(name, level, strength, dexterity, constitution, intelligence, wisdom, charisma, class_id):
     """
     Creates a character
@@ -43,8 +39,8 @@ def get_character(character_id = None):
     Keyword arguments:
     user_id -- id key of the character, None if not specified
     
-    If character_id is None, returns all characters' surface-level information (name, level, class)
-    If character_id is not None, returns all information about the character (name, level, class, ability scores)
+    Returns all information about the character (name, level, class, ability scores) if character_id is given
+    Otherwise, returns all characters' surface-level information (name, level, class) 
     """
 
     sql = """

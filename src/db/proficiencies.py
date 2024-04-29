@@ -21,9 +21,9 @@ def create_proficiency(character_id, proficiency_name):
 
     exec_commit(sql, [character_id, proficiency_name])
 
-def list_proficiencies(character_id):
+def get_proficiencies(character_id):
     """
-    List all proficiencies for a character.
+    Gets all proficiencies for a character.
 
     Keyword arguments:
     character_id -- id of the character
@@ -38,23 +38,6 @@ def list_proficiencies(character_id):
     """
 
     return exec_get_all(sql, [character_id])
-
-
-def get_proficiency_bonus(character_id):
-    """
-    Calculate the proficiency bonus based on the character's level.
-
-    Keyword arguments:
-    character_id -- id of the character
-
-    Returns the proficiency bonus
-    """
-
-    sql = """SELECT level FROM characters WHERE id = %s"""
-
-    level = exec_get_one(sql, [character_id])[0]
-
-    return calculate_proficiency_bonus(level)
 
 
 def delete_proficiency(character_id, proficiency_name):

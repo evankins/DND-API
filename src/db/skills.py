@@ -22,7 +22,7 @@ def get_skill(character_id, skill_name = None):
     LEFT JOIN proficiencies p ON p.skill_id = s.id AND p.character_id = ch.id
     WHERE (s.name = %s OR %s IS NULL)
 	AND ca.ability_id = a.id
-    ORDER BY s.ability_id;
+    ORDER BY s.ability_id, s.id;
     """
 
     skills = exec_get_all(sql, [character_id, skill_name, skill_name])

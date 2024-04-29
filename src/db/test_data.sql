@@ -25,7 +25,7 @@ INSERT INTO character_abilities (character_id, ability_id, score) VALUES
 
 INSERT INTO proficiencies (character_id, skill_id) VALUES 
     (1, 1),
-    (1, 4),
+    (1, 3),
     (1, 8),
     (1, 9),
     (1, 12),
@@ -33,8 +33,6 @@ INSERT INTO proficiencies (character_id, skill_id) VALUES
     (1, 15),
     (1, 17),
     (1, 18),
-    (2, 2),
-    (2, 3),
     (2, 5),
     (2, 6),
     (2, 7),
@@ -42,8 +40,8 @@ INSERT INTO proficiencies (character_id, skill_id) VALUES
     (2, 11),
     (2, 14),
     (2, 16),
-    (3, 1),
     (3, 4),
+    (3, 5),
     (3, 8),
     (3, 9),
     (3, 12),

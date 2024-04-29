@@ -30,7 +30,7 @@ class TestExample(unittest.TestCase):
 
         data = {
             "name": "Grognak",
-            "level": 20,
+            "level": 1,
             "class_id": 1,
             "strength": 20,
             "dexterity": 16,

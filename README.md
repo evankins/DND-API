@@ -2,9 +2,13 @@
 
 ## Description
 
-This project uses Python and PostgreSQL to manage and interact with DND character data, including their skills, abilities, and proficiencies. The application provides an API for accessing and manipulating this data, allowing users to create, read, update, and delete characters and their associated attributes. This project is a great way to combine a passion for D&D with software development, and serves as a practical exercise in database management, API development, and Python programming.
+This project uses Python and PostgreSQL to manage and interact with DND character data, including their skills, abilities, and proficiencies. The application provides an API for accessing and manipulating this data, allowing users to create, read, update, and delete characters and their associated attributes. This project is a great way to combine my passion for D&D with software development, and serves as a practical exercise in database management, API development, and Python programming.
 
-[![Python application test](https://github.com/evankins/DND-API/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/evankins/DND-API/actions/workflows/main.yml)
+## Showcase
+
+Explore the database with the Continuous Integration (CI) pipeline I've made. Click the badge below and then navigate to Latest Workflow -> Build -> Run Tests for the detailed test results showcasing the database's functionality and outputs.
+
+[![Backend Unit Tests](https://github.com/evankins/DND-API/actions/workflows/backend_unit_tests.yml/badge.svg?branch=main)](https://github.com/evankins/DND-API/actions/workflows/backend_unit_tests.yml) 
 
 ## Table of Contents
 

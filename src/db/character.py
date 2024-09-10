@@ -43,14 +43,9 @@ def create_character(name, level, strength, dexterity, constitution, intelligenc
         (currval('characters_id_seq'), 5, %s), 
         (currval('characters_id_seq'), 6, %s)
     RETURNING currval('characters_id_seq');
-    INSERT INTO proficiencies (character_id, skill_id) VALUES
-        -- Saving throw proficiencies are based on the class
-        (currval('characters_id_seq'), (SELECT saving_throw_ability_1 FROM classes WHERE id = %s)),
-        (currval('characters_id_seq'), (SELECT saving_throw_ability_2 FROM classes WHERE id = %s))
-    RETURNING currval('characters_id_seq')
     """
 
-    result = exec_commit_get_one(sql, [name, level, class_id, strength, dexterity, constitution, intelligence, wisdom, charisma, class_id, class_id])
+    result = exec_commit_get_one(sql, [name, level, class_id, strength, dexterity, constitution, intelligence, wisdom, charisma])
 
     if result is not None:
         return result

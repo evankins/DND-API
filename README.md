@@ -35,3 +35,7 @@ Explore the database with the Continuous Integration (CI) pipeline I've made. Cl
 
 1. Make sure the server is running
 2. Execute `python -m unittest` at the root of the repo
+
+## Workflow
+
+Last run: 9/10/2024
